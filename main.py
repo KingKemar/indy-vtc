@@ -1,14 +1,23 @@
 from flask import Flask
+from mongoengine import connect
+from dotenv import load_dotenv
+
+import os
+
+load_dotenv()
+
+mongo_user = os.getenv('MONGO_INITDB_ROOT_USERNAME', 'default_user')
+mongo_password = os.getenv('MONGO_INITDB_ROOT_PASSWORD', 'default_password')
+mongo_db_name = os.getenv('MONGO_DB_NAME', 'default_db')
+mongo_host = 'mongodb'
+
+mongo_uri = f"mongodb://{mongo_user}:{mongo_password}@{mongo_host}/{mongo_db_name}"
+print(mongo_uri)
+
+connect(mongo_db_name, host=mongo_uri)
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return 'Hello, World!'
-
-@app.route('/about')
-def about():
-    return 'About Page'
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -10,5 +10,6 @@ EXPOSE 8000
 
 ENV NAME World
 ENV FLASK_APP main.py
+ENV PYTHONUNBUFFERED 1
 
 CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
