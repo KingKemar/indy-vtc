@@ -4,17 +4,43 @@ services:
     build: .
     ports:
       - "8000:8000"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      - MONGO_DB_NAME=${MONGO_DB_NAME}
-      - FLASK_APP_ENV=${FLASK_APP_ENV}
     depends_on:
       - mongodb
+    env_file: 
+      - .env
   mongodb:
     image: mongo
     ports:
       - "27017:27017"
+    env_file: 
+      - .env
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/usr/src/app
+    env_file: 
+      - .env.test
+    depends_on:
+      - mongodb_test
+  mongodb_test:
+    image: mongo
+    ports:
+      - "27018:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    - MONGO_INITDB_ROOT_USERNAME=test_user
+    - MONGO_INITDB_ROOT_PASSWORD=test_password
+    - MONGO_DB_NAME=test_db
+    env_file: 
+      - .env.test
+    volumes:
+      - ./mongo-init-test.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - mongodb_test_data:/data/db
+
+volumes:
+  mongodb_data:
+  mongodb_test_data:

@@ -1,10 +1,7 @@
 from flask import Flask
 from mongoengine import connect
-from dotenv import load_dotenv
 
 import os
-
-load_dotenv()
 
 mongo_user = os.getenv('MONGO_INITDB_ROOT_USERNAME', 'default_user')
 mongo_password = os.getenv('MONGO_INITDB_ROOT_PASSWORD', 'default_password')
