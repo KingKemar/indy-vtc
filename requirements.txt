@@ -1,3 +1,4 @@
 mongoengine
 Flask
 python-dotenv
+requests

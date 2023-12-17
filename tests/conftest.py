@@ -8,8 +8,8 @@ import os
 
 @pytest.fixture(scope='session', autouse=True)
 def mongodb_connection():
-    user = os.getenv('MONGO_INITDB_ROOT_USERNAME')
-    password = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
+    user = os.getenv('MONGO_USER')
+    password = os.getenv('MONGO_PASSWORD')
     db_name = os.getenv('MONGO_DB_NAME')
     host = os.getenv('HOST')
     print(f'mongodb://{user}:{password}@{host}/{db_name}')
