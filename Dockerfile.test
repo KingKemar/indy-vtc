@@ -9,4 +9,4 @@ RUN pip install pytest
 
 ENV PYTHONUNBUFFERED 1
 
-CMD ["pytest","-v"]
+CMD ["pytest","-v","-s"]

@@ -20,6 +20,7 @@ class DateRestriction(BaseRestriction):
     def check_restrictions(self, arguments):
         # Get current date
         current_date = datetime.now().date()
+        print(current_date)
 
         # Check and parse the 'after' date if it exists
         if self.after:

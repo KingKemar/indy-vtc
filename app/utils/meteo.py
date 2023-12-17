@@ -23,5 +23,6 @@ def get_weather(town):
 
     weather_data = response.json()
     weather_description = weather_data['weather'][0]['main']
+    town_temp = weather_data['main']['temp']
 
-    return WEATHER_MAPPING.get(weather_description, ["varied"])
+    return town_temp, WEATHER_MAPPING.get(weather_description, ["varied"])

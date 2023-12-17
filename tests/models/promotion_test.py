@@ -52,7 +52,7 @@ def test_promocode_with_logical_restriction():
     promo.clean()
 
 
-def test_save_and_retrieve_promocode():
+def test_save_and_retrieve_promocode(mongodb_connection):
     """Test saving a PromoCode to the database and retrieving it."""
     promo_name = "SummerSale"
     promo = PromoCode(
