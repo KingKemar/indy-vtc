@@ -1,5 +1,3 @@
-import requests
-import os
 from app.utils.mappings import WEATHER_MAPPING
 from app.utils.meteo import get_weather
 
