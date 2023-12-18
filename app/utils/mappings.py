@@ -1,7 +1,7 @@
 
 
 WEATHER_MAPPING = {
-    'Clear': ['sunny'],
+    'Clear': ['sunny', 'clear'],
     'Clouds': ['cloudy'],
     'Rain': ['rainy', 'cloudy'],
     'Snow': ['snowy', 'chilly'],

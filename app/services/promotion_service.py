@@ -1,14 +1,12 @@
 from flask import request, jsonify
 from app.models.promotion import PromoCode
 from app.utils.meteo import get_weather
+from mongoengine import ValidationError
 
 
 def apply_promotion(data):
     promo_name = data.get("promocode_name")
     arguments = data.get("arguments")
-
-    print(arguments)
-    print(promo_name)
 
     if not promo_name or not arguments:
         return jsonify({"error": "Missing promocode_name or arguments"}), 400
@@ -31,9 +29,7 @@ def apply_promotion(data):
         return jsonify({
             "promocode_name": promocode.name,
             "status": "denied",
-            "reasons": {
-                error_list
-            }
+            "reasons": error_list
         }), 403
 
     # Add logic for applying the promocode here
@@ -43,3 +39,16 @@ def apply_promotion(data):
         "status": "accepted",
         "avantage": {promocode.avantage.avantage_type: promocode.avantage.value}
     }), 200
+
+
+def create_promotion(data):
+    try:
+        # Create PromoCode instance from JSON data
+        promo = PromoCode.from_json(data)
+        promo.clean()  # Validate the promo code
+        promo.save()   # Save to database
+
+        return jsonify({"message": "PromoCode created successfully"}), 201
+
+    except ValidationError as e:
+        return jsonify({"error": str(e)}), 400

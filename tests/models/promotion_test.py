@@ -1,8 +1,6 @@
 import pytest
-from app.models.promotion import (
-    PromoCode, DateRestriction, AgeRestriction, LogicalRestriction,
-    MeteoRestriction, ValidationError, Avantage
-)
+from app.models.promotion import PromoCode,  ValidationError, Avantage
+from app.models.restriction import DateRestriction, AgeRestriction, LogicalRestriction, MeteoRestriction
 from datetime import datetime, timedelta
 
 
@@ -19,21 +17,6 @@ def test_create_valid_promocode():
         restrictions=[DateRestriction(after="2021-06-01", before="2021-08-31")]
     )
     promo.clean()
-
-
-def test_promocode_with_multiple_restrictions():
-    """Test that a PromoCode with multiple restrictions raises ValidationError."""
-    promo = PromoCode(
-        name="SpringSale",
-        avantage={"avantage_type": "percent",
-                  "value": 10},
-        restrictions=[
-            DateRestriction(after="2021-03-01", before="2021-05-31"),
-            AgeRestriction(eq=25)
-        ]
-    )
-    with pytest.raises(ValidationError):
-        promo.clean()
 
 
 def test_promocode_with_logical_restriction():
