@@ -23,6 +23,21 @@ HOST=mongodb
 ```
 Remplacez les valeurs entre < > par vos propres configurations.
 
+## execution du code
+Le projet est dockerisé, on utilise docker-compose.
+Si on veut l'environement dev on fait
+```
+docker-compose build
+docker-compose up web
+```
+
+Si on veut lancer les tests:
+```
+docker-compose build
+docker-compose up test
+```
+
+
 ## Qu’est-ce que tu aurais fait pour améliorer ton test si tu avais eu plus de temps?
 plusieurs fonctionnalités manquantes que j'ai pas eu l'occasion de faire au 18/12 matin  
 => auth service  
