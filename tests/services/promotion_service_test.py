@@ -1,6 +1,7 @@
+import pytest
+
 from app.models.promotion import PromoCode
 from app.models.restriction import DateRestriction
-import pytest
 from flask import json
 
 

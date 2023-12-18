@@ -1,5 +1,6 @@
 import requests
 import os
+
 from app.utils.mappings import WEATHER_MAPPING
 
 WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather"

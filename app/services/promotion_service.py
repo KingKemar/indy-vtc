@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import jsonify
 from app.models.promotion import PromoCode
 from app.utils.meteo import get_weather
 from mongoengine import ValidationError

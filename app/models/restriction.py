@@ -1,6 +1,5 @@
-from mongoengine import StringField, IntField, ListField, EmbeddedDocument, EmbeddedDocumentField
+from mongoengine import StringField, IntField, ListField, EmbeddedDocument, EmbeddedDocumentField, ValidationError
 from datetime import datetime
-from mongoengine import ValidationError
 
 
 class BaseRestriction(EmbeddedDocument):

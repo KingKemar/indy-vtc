@@ -1,10 +1,10 @@
 import pytest
-from mongoengine import connect, disconnect
-from app.models.promotion import PromoCode
-from mongoengine import connect
-from main import app
 
 import os
+
+from mongoengine import connect, disconnect
+from app.models.promotion import PromoCode
+from main import app
 
 
 @pytest.fixture

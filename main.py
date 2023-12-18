@@ -1,8 +1,11 @@
+import os
+
 from flask import Flask
 from mongoengine import connect
 from flask import request
-import os
+
 from app.services.promotion_service import apply_promotion, create_promotion
+
 
 mongo_user = os.getenv('MONGO_USER', 'default_user')
 mongo_password = os.getenv('MONGO_PASSWORD', 'default_password')
