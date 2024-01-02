@@ -1,6 +1,7 @@
+import os
+
 import pytest
 
-import os
 
 from mongoengine import connect, disconnect
 from app.models.promotion import PromoCode

@@ -1,5 +1,5 @@
 from mongoengine import Document, StringField, IntField, ListField, EmbeddedDocument, EmbeddedDocumentField
-from app.models.restriction import BaseRestriction, RestrictionFactory
+from app.models.restriction import BaseRestriction, RestrictionFactory, RestrictionValidationError
 
 
 class Avantage(EmbeddedDocument):
@@ -18,13 +18,17 @@ class PromoCode(Document):
     meta = {'collection': 'weather_codes'}
 
     def check_restrictions(self, arguments):
-        messages = []
-        all_passed = True
+        errors = []
+
         for restriction in self.restrictions:
-            passed, msg = restriction.check_restrictions(arguments)
-            all_passed &= passed  # AND logic
-            messages.extend(msg)
-        return all_passed, messages
+            result = restriction.check_restrictions(arguments)
+            if result:
+                errors.append(result)
+
+        if not errors:
+            return None
+
+        return RestrictionValidationError("AND", None, errors)
 
     @classmethod
     def from_json(cls, data):

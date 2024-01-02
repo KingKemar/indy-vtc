@@ -1,7 +1,8 @@
 from flask import jsonify
+from mongoengine import ValidationError
+
 from app.models.promotion import PromoCode
 from app.utils.meteo import get_weather
-from mongoengine import ValidationError
 
 
 def apply_promotion(data):
@@ -17,28 +18,40 @@ def apply_promotion(data):
     if not promocode:
         return jsonify({"error": "Promo code not found"}), 404
 
-    town_temp, weather_description = get_weather(arguments['meteo']['town'])
+    town_temp, weather_description = get_weather(arguments["meteo"]["town"])
 
     # porting town weather values in the arguments to make the checks easier.
-    arguments['meteo']['weather'] = weather_description
-    arguments['meteo']['temp'] = town_temp
+    arguments["meteo"]["weather"] = weather_description
+    arguments["meteo"]["temp"] = town_temp
 
     # restrictions check
-    restrictions_met, error_list = promocode.check_restrictions(arguments)
-    if not restrictions_met:
-        return jsonify({
-            "promocode_name": promocode.name,
-            "status": "denied",
-            "reasons": error_list
-        }), 403
+    restrictions_met = promocode.check_restrictions(arguments)
+    if restrictions_met:
+        return (
+            jsonify(
+                {
+                    "promocode_name": promocode.name,
+                    "status": "denied",
+                    "reasons": restrictions_met.jsonify(),
+                }
+            ),
+            403,
+        )
 
     # Add logic for applying the promocode here
 
-    return jsonify({
-        "promocode_name": promocode.name,
-        "status": "accepted",
-        "avantage": {promocode.avantage.avantage_type: promocode.avantage.value}
-    }), 200
+    return (
+        jsonify(
+            {
+                "promocode_name": promocode.name,
+                "status": "accepted",
+                "avantage": {
+                    promocode.avantage.avantage_type: promocode.avantage.value
+                },
+            }
+        ),
+        200,
+    )
 
 
 def create_promotion(data):
@@ -46,7 +59,7 @@ def create_promotion(data):
         # Create PromoCode instance from JSON data
         promo = PromoCode.from_json(data)
         promo.clean()  # Validate the promo code
-        promo.save()   # Save to database
+        promo.save()  # Save to database
 
         return jsonify({"message": "PromoCode created successfully"}), 201
 
