@@ -1,3 +1,140 @@
+# Test technique Indy
+
+## **Contexte**
+
+Tu fais partie d'une entreprise de réservation de VTC (de type Uber) et l'équipe Marketing souhaite encourager les clients à réserver un trajet en leur proposant des promotions.
+
+Pour cela, elle souhaite s'équiper d'un service de gestion de *promocodes* où :
+
+- l'équipe Marketing pourra ajouter des *promocodes* dont la validité dépendra d'un ou plusieurs critères
+- et l'application pourra vérifier la validité d'un *promocode* et obtenir la réduction associée.
+
+L'objectif de ce test est de construire ce service avec son API. Tu pourras t'aider de n'importe quel framework, librairie ou outil que tu jugeras utiles.
+
+## **Spécifications**
+
+### **Structure d'un** *promocode*
+
+Tout promocode se compose d'un nom, d'un avantage (la réduction associée) et d'une ou plusieurs restrictions (les critères de validité du promocode).
+
+Pour qu'un promocode soit validé, il faut que toutes ses restrictions soient validées.
+
+Les restrictions sont définies par différentes règles intitulées `@age`, `@date`, `@meteo`, `@or` et `@and`. Les règles `@or` et `@and` incluent d'autres règles.
+
+> Une règle `@or` ou `@and` pouvant inclure d'autres règles `@or` ou `@and`, **l'arbre des restrictions peut aller jusqu'à une profondeur arbitraire**.
+> 
+
+Voici un exemple de promocode :
+
+```json
+{
+  "_id": "...",
+  "name": "WeatherCode",
+  "avantage": { "percent": 20 },
+  "restrictions": [
+    {
+      "@date": {
+        "after": "2019-01-01",
+        "before": "2020-06-30"
+      }
+    },
+    {
+      "@or": [
+        {
+          "@age": {
+            "eq": 40
+          }
+        },
+        {
+          "@and": [
+            {
+              "@age": {
+                "lt": 30,
+                "gt": 15
+              }
+            },
+            {
+              "@meteo": {
+                "is": "clear",
+                "temp": {
+                  "gt": "15" // Celsius here.
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Ce promocode se lit de la manière suivante :
+
+- Il peut être utilisé si la date d'aujourd'hui est comprise entre le 1er janvier 2019 et le 30 juin 2020.
+- Il faut que le client ait soit 40 ans ou soit qu'il ait entre 15 et 30 ans et que la température extérieure soit supérieure à 15 °C avec un soleil radieux.
+- Si le client valide ces restrictions, alors il obtient une réduction de 20 % sur son trajet.
+
+### **Ajout d'un** *promocode*
+
+👉 **Consigne : le service doit exposer une route pour pouvoir ajouter et sauvegarder des promocodes.**
+
+> Pour la sauvegarde des données, il n'est pas nécessaire d'utiliser une vraie base de données. Une implémentation basique en mémoire est amplement suffisante.
+> 
+
+### **Validation d'un** *promocode* **et obtention de la réduction**
+
+👉 **Consigne : le service doit exposer une deuxième route pour valider l'utilisation d'un promocode et obtenir la réduction associée pour un utilisateur donné.**
+
+*Exemple de requête :*
+
+```json
+{
+  "promocode_name": "WeatherCode",
+  "arguments": {
+    "age": 25,
+    "meteo": { "town": "Lyon" }
+  }
+}
+```
+
+*Exemple de réponse si le promocode est validé :*
+
+```json
+{
+  "promocode_name": "WeatherCode",
+  "status": "accepted",
+  "avantage": { "percent": 20 }
+}
+```
+
+*Exemple de réponse si le promocode est invalidé :*
+
+```json
+{
+  "promocode_name": "WeatherCode",
+  "status": "denied",
+  "reasons": {
+    // Les raisons pour lesquelles le promocode n'a pas été validé
+  }
+}
+```
+
+## **Evaluation**
+
+Lors de l'évaluation de ton code, une attention particulière sera accordée :
+
+- au fonctionnement de l'algorithme,
+- à l'architecture de l'application,
+- à la lisibilité et la clarté du code,
+- et à la présence de tests et à leur qualité.
+
+👉 Et, pourras-tu répondre à la question suivante dans ton readme : ***Qu’est-ce que tu aurais fait pour améliorer ton test si tu avais eu plus de temps?***
+
+Cela nous permettra d’en discuter pendant le debrief 😉
+
+Bon code 💪 ✌️
+
 # indy-vtc
 
 Test technique Indy
