@@ -120,30 +120,6 @@ Ce promocode se lit de la manière suivante :
 }
 ```
 
-## **Evaluation**
-
-Lors de l'évaluation de ton code, une attention particulière sera accordée :
-
-- au fonctionnement de l'algorithme,
-- à l'architecture de l'application,
-- à la lisibilité et la clarté du code,
-- et à la présence de tests et à leur qualité.
-
-👉 Et, pourras-tu répondre à la question suivante dans ton readme : ***Qu’est-ce que tu aurais fait pour améliorer ton test si tu avais eu plus de temps?***
-
-Cela nous permettra d’en discuter pendant le debrief 😉
-
-Bon code 💪 ✌️
-
-# indy-vtc
-
-Test technique Indy
-
-service de gestion de *promocodes* où :
-
-- l'équipe Marketing pourra ajouter des *promocodes* dont la validité dépendra d'un ou plusieurs critères
-- et l'application pourra vérifier la validité d'un *promocode* et obtenir la réduction associée.
-
 ## Configuration
 Pour configurer correctement l'environnement de l'application, vous devez créer deux fichiers de variables d'environnement : .env pour le développement et .env.test pour les tests.
 
